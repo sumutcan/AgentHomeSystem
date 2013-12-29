@@ -1,17 +1,17 @@
 package ObjectLayer;
 
-public class RefrigiratorItem {
+public class RefrigeratorItem {
 
 	String itemName;
 	int count;
 	double weight;
 	
-	public RefrigiratorItem(String _itemName, int _count) {
+	public RefrigeratorItem(String _itemName, int _count) {
 		this.itemName = _itemName;
 		this.count = _count;
 	}
 	
-	public RefrigiratorItem(String _itemName, double _weight)
+	public RefrigeratorItem(String _itemName, double _weight)
 	{
 		this.itemName = _itemName;
 		this.weight = _weight;
