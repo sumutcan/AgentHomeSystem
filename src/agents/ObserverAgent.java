@@ -1,13 +1,39 @@
 package agents;
 
 import jade.core.Agent;
+import jade.core.behaviours.TickerBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAException;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 public class ObserverAgent extends Agent {
 
 	public void setup()
 	{
-		System.out.println("Selamun Aleyküm mümin kardeş. Ben gözlemciyim elhamdülillah.");
-		doDelete();
+		System.out.println("Observer agent up and running.");
+		
+		addBehaviour(new TickerBehaviour(this,10000) {
+			
+			@Override
+			protected void onTick() {
+				
+				DFAgentDescription agentDesc = new DFAgentDescription();
+				DFAgentDescription[] results = null;
+				try {
+					results = DFService.search(myAgent, agentDesc);
+				} catch (FIPAException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				for (int i = 0; i<results.length; i++)
+				{
+					System.out.println(results[i].getName());
+				}
+				
+			}
+		});
 	}
 	
 	public void takeDown()
