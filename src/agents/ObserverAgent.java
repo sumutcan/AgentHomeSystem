@@ -20,6 +20,7 @@ public class ObserverAgent extends Agent {
 				
 				DFAgentDescription agentDesc = new DFAgentDescription();
 				DFAgentDescription[] results = null;
+				//yorum
 				try {
 					results = DFService.search(myAgent, agentDesc);
 				} catch (FIPAException e) {
