@@ -30,7 +30,7 @@ public class ObserverAgent extends Agent {
 				
 				for (int i = 0; i<results.length; i++)
 				{
-					System.out.println("Agent: " + results[i].getName());
+					System.out.println("Agent: " + results[i].getName().getLocalName());
 				}
 				
 			}
