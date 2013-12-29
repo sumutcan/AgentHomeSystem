@@ -88,4 +88,38 @@ public class SecurityProperties {
 		this.privateNetworkIsClean = privateNetworkIsClean;
 	}
 	
+	public String getStatus(String place, boolean value)
+	{
+		if(value)
+			return place + ": Secure.";
+		return place + ": Security Breach!";
+	}
+	
+	@Override
+	public String toString() {
+		/*boolean backDoorIsClean;
+		boolean window1IsClean;
+		boolean window2IsClean;
+		boolean window3IsClean;
+		boolean window4IsClean;
+		boolean publicNetworkIsClean;
+		boolean privateNetworkIsClean;*/
+		
+		// TODO Auto-generated method stub
+		String message = "";
+		
+		message += getStatus("Front Door", frontDoorIsClean);
+		message += getStatus("Back Door", backDoorIsClean);
+		message += getStatus("Window 1", window1IsClean);
+		message += getStatus("Window 2", window2IsClean);
+		message += getStatus("Window 3", window3IsClean);
+		message += getStatus("Window 4", window4IsClean);
+		message += getStatus("Public Network", publicNetworkIsClean);
+		message += getStatus("Private Network", privateNetworkIsClean);
+		
+		return message;
+		
+	}
+	
+	
 }
