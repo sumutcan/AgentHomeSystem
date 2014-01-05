@@ -9,7 +9,8 @@ public class Pong extends Behaviour {
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
-		MessageTemplate mt =  MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+		
+		MessageTemplate mt =  MessageTemplate.and(MessageTemplate.MatchConversationId("observing"), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		ACLMessage reply = myAgent.receive(mt);
 		
 		if (reply!=null)

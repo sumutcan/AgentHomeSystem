@@ -1,5 +1,6 @@
 package agents;
 
+import behaviours.Alive;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
@@ -15,6 +16,8 @@ public class RefrigeratorAgent extends Agent {
 		sd.setName("Refrigerator");
 		sd.setType("home-device");
 		dfd.addServices(sd);
+		
+		addBehaviour(new Alive());
 		try {
 			DFService.register(this, dfd);
 			System.out.println("Refrigerator is up and running.");
