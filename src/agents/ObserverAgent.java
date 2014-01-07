@@ -20,7 +20,7 @@ public class ObserverAgent extends Agent {
 	{
 		System.out.println("Observer agent up and running.");
 
-		addBehaviour(new TickerBehaviour(this, 10000) {
+		addBehaviour(new TickerBehaviour(this, 5000) {
 
 			@Override
 			protected void onTick() {
