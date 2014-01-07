@@ -97,14 +97,6 @@ public class SecurityProperties {
 	
 	@Override
 	public String toString() {
-		/*boolean backDoorIsClean;
-		boolean window1IsClean;
-		boolean window2IsClean;
-		boolean window3IsClean;
-		boolean window4IsClean;
-		boolean publicNetworkIsClean;
-		boolean privateNetworkIsClean;*/
-		
 		// TODO Auto-generated method stub
 		String message = "";
 		
