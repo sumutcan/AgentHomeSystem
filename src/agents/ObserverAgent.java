@@ -36,10 +36,9 @@ public class ObserverAgent extends Agent {
 				}
 				allAgents = new AID[results.length];
 				for (int i = 0; i<results.length; i++)
-				{
 					allAgents[i] = results[i].getName();
-					System.out.println("Agent: " + results[i].getName().getLocalName());
-				}
+					
+				
 				
 				FSMBehaviour observing = new FSMBehaviour();
 				observing.registerFirstState(new Ping(allAgents), "PING");
