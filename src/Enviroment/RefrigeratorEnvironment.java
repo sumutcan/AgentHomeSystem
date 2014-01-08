@@ -9,9 +9,21 @@ public class RefrigeratorEnvironment {
 	ArrayList<RefrigeratorItem> items;
 	int criticalCount;
 	double criticalWeight;
-
-	public RefrigeratorEnvironment() {
+	private static RefrigeratorEnvironment instance = null;
+	
+	private RefrigeratorEnvironment()
+	{
 		this.items = new ArrayList<RefrigeratorItem>();
+	}
+	
+	public synchronized static RefrigeratorEnvironment getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new RefrigeratorEnvironment();
+		}
+		
+		return instance;
 	}
 
 	public void AddItemToRefrigirator(RefrigeratorItem newItem) {
@@ -45,7 +57,7 @@ public class RefrigeratorEnvironment {
 		}
 	}
 
-	public void GetCriticalItems() {
+	public String GetCriticalItems() {
 		String allItemsString = "";
 		for (RefrigeratorItem item : this.items) {
 
@@ -58,6 +70,8 @@ public class RefrigeratorEnvironment {
 			}
 
 		}
+		
+		return allItemsString;
 	}
 
 	public void BuyItemByCount(RefrigeratorItem item, int count) {
