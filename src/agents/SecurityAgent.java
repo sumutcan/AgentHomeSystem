@@ -1,6 +1,7 @@
 package agents;
 
 import behaviours.Alive;
+import behaviours.CheckSecurity;
 import utils.AgentSetup;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -20,6 +21,7 @@ public class SecurityAgent extends Agent {
 		}
 		System.out.println("Security system is up and running.");
 		addBehaviour(new Alive());
+		addBehaviour(new CheckSecurity(this,5000));
 	}
 	
 }

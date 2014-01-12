@@ -1,117 +1,74 @@
 package Enviroment;
 
+import java.util.ArrayList;
+
 public class SecurityProperties {
+
+	private String[] namesOfCheckPoints = new String[] { "Front Door",
+			"Back Door", "Window 1", "Window 2", "Window 3", "Window 4",
+			"Public Network", "Private Network" };
+
+	private boolean[] isSecure = new boolean[] { true, true, true, true, true,
+			true, true, true };
+
+	private static volatile SecurityProperties instance = null;
+
+	private SecurityProperties() {
+
+	}
+
+	public static synchronized SecurityProperties getInstance() {
+		if (instance == null)
+			instance = new SecurityProperties();
+
+		return instance;
+	}
+
+	public ArrayList<String> getListOfInsecureCheckPoints() {
+		ArrayList<String> msgList = new ArrayList<String>();
+		for (int i = 0; i < this.isSecure.length; i++) {
+			boolean checkPoint = this.isSecure[i];
+			if (!checkPoint) {
+				msgList.add(this.namesOfCheckPoints[i]);
+			}
+		}
+
+		return msgList;
+	}
+
+	public String getNamesOfInsecureCheckPoints() {
+		ArrayList<String> msgList = getListOfInsecureCheckPoints();
+
+		String msg;
+
+		if (msgList.size() > 0) {
+			msg = "Found insecure check point(s)!\nCount: " + msgList.size()
+					+ "\nComplete List:\n";
+
+			for (String checkPoint : msgList) {
+				msg += checkPoint + "\n";
+			}
+		} else {
+			msg = "There is no insecure check point(s) found.";
+		}
+
+		return msg;
+	}
 	
-	boolean frontDoorIsClean;
-	boolean backDoorIsClean;
-	boolean window1IsClean;
-	boolean window2IsClean;
-	boolean window3IsClean;
-	boolean window4IsClean;
-	boolean publicNetworkIsClean;
-	boolean privateNetworkIsClean;
-	
-	
-	public SecurityProperties()
+	public void changeState(int index)
 	{
-		frontDoorIsClean = true;
-		backDoorIsClean = true;
-		window1IsClean = true;
-		window2IsClean = true;
-		window3IsClean = true;
-		window4IsClean = true;
-		publicNetworkIsClean = true;
-		privateNetworkIsClean = true;
+		if(index > -1 && index < this.isSecure.length)
+		{
+			this.isSecure[index] = !this.isSecure[index];
+		}
 	}
 	
-	public boolean isFrotDoorIsClean() {
-		return frontDoorIsClean;
-	}
-
-	public void setFrotDoorIsClean(boolean frotDoorIsClean) {
-		this.frontDoorIsClean = frotDoorIsClean;
-	}
-
-	public boolean isBackDoorIsClean() {
-		return backDoorIsClean;
-	}
-
-	public void setBackDoorIsClean(boolean backDoorIsClean) {
-		this.backDoorIsClean = backDoorIsClean;
-	}
-
-	public boolean isWindow1IsClean() {
-		return window1IsClean;
-	}
-
-	public void setWindow1IsClean(boolean window1IsClean) {
-		this.window1IsClean = window1IsClean;
-	}
-
-	public boolean isWindow2IsClean() {
-		return window2IsClean;
-	}
-
-	public void setWindow2IsClean(boolean window2IsClean) {
-		this.window2IsClean = window2IsClean;
-	}
-
-	public boolean isWindow3IsClean() {
-		return window3IsClean;
-	}
-
-	public void setWindow3IsClean(boolean window3IsClean) {
-		this.window3IsClean = window3IsClean;
-	}
-
-	public boolean isWindow4IsClean() {
-		return window4IsClean;
-	}
-
-	public void setWindow4IsClean(boolean window4IsClean) {
-		this.window4IsClean = window4IsClean;
-	}
-
-	public boolean isPublicNetworkIsClean() {
-		return publicNetworkIsClean;
-	}
-
-	public void setPublicNetworkIsClean(boolean publicNetworkIsClean) {
-		this.publicNetworkIsClean = publicNetworkIsClean;
-	}
-
-	public boolean isPrivateNetworkIsClean() {
-		return privateNetworkIsClean;
-	}
-
-	public void setPrivateNetworkIsClean(boolean privateNetworkIsClean) {
-		this.privateNetworkIsClean = privateNetworkIsClean;
-	}
-	
-	public String getStatus(String place, boolean value)
+	public void setAllToSecure()
 	{
-		if(value)
-			return place + ": Secure.";
-		return place + ": Security Breach!";
+		for (int i = 0; i < this.isSecure.length; i++) {
+			this.isSecure[i] = true;
+		}
 	}
 	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		String message = "";
-		
-		message += getStatus("Front Door", frontDoorIsClean);
-		message += getStatus("Back Door", backDoorIsClean);
-		message += getStatus("Window 1", window1IsClean);
-		message += getStatus("Window 2", window2IsClean);
-		message += getStatus("Window 3", window3IsClean);
-		message += getStatus("Window 4", window4IsClean);
-		message += getStatus("Public Network", publicNetworkIsClean);
-		message += getStatus("Private Network", privateNetworkIsClean);
-		
-		return message;
-		
-	}
-	
-	
+
 }
