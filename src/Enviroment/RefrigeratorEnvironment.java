@@ -7,8 +7,8 @@ import ObjectLayer.RefrigeratorItem;
 public class RefrigeratorEnvironment {
 
 	ArrayList<RefrigeratorItem> items;
-	int criticalCount;
-	double criticalWeight;
+	private int criticalCount;
+	private double criticalWeight;
 	private static RefrigeratorEnvironment instance = null;
 	
 	private RefrigeratorEnvironment()
@@ -57,29 +57,49 @@ public class RefrigeratorEnvironment {
 		}
 	}
 
-	public String GetCriticalItems() {
-		String allItemsString = "";
+	public ArrayList<RefrigeratorItem> GetCriticalItems() {
+		ArrayList<RefrigeratorItem> criticalItems = new ArrayList<RefrigeratorItem>();
 		for (RefrigeratorItem item : this.items) {
 
 			if (item.isBasedOnCount()) {
 				if (item.isOnCriticalLevel(this.criticalCount))
-					allItemsString += item.toString();
+					criticalItems.add(item);
 			} else {
 				if (item.isOnCriticalLevel(this.criticalWeight))
-					allItemsString += item.toString();
+					criticalItems.add(item);
 			}
 
 		}
 		
-		return allItemsString;
+		return criticalItems;
 	}
 
-	public void BuyItemByCount(RefrigeratorItem item, int count) {
-		item.setCount(item.getCount() + count);
+	
+	
+	public void BuyItem(RefrigeratorItem item,  int count, double weight) {
+		
+		if (item.isBasedOnCount())
+			item.setCount(item.getCount() + count);
+		else
+			item.setWeight(item.getWeight() + weight);
 	}
 
-	public void BuyItemByWeight(RefrigeratorItem item, double weight) {
-		item.setWeight(item.getWeight() + weight);
+
+
+	public int getCriticalCount() {
+		return criticalCount;
+	}
+
+	public void setCriticalCount(int criticalCount) {
+		this.criticalCount = criticalCount;
+	}
+
+	public double getCriticalWeight() {
+		return criticalWeight;
+	}
+
+	public void setCriticalWeight(double criticalWeight) {
+		this.criticalWeight = criticalWeight;
 	}
 
 }

@@ -19,7 +19,7 @@ public class RefrigeratorAgent extends Agent {
 			DFService.register(this, dfd);
 			System.out.println("Refrigerator is up and running.");
 			addBehaviour(new Alive());
-			addBehaviour(new CheckItem());
+			addBehaviour(new CheckItem(this, 5000));
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

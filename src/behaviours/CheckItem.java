@@ -1,28 +1,49 @@
 package behaviours;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import Enviroment.RefrigeratorEnvironment;
+import ObjectLayer.RefrigeratorItem;
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class CheckItem extends CyclicBehaviour {
+public class CheckItem extends TickerBehaviour {
 
-	@Override
-	public void action() {
-		// TODO Auto-generated method stub
-		String criticalItems = RefrigeratorEnvironment.getInstance().GetCriticalItems();
-		
-		if (!criticalItems.isEmpty() && criticalItems != null)
-		{
-			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.addReceiver(new AID("observer",AID.ISLOCALNAME));
-			msg.setConversationId("info");
-			msg.setContent(criticalItems);
-			myAgent.send(msg);
-		}
+	public CheckItem(Agent a, long period) {
+		super(a, period);
+		// TODO Auto-generated constructor stub
 	}
 
-	
+	@Override
+	public void onTick() {
+		// TODO Auto-generated method stub
+		ArrayList<RefrigeratorItem> criticalItems = RefrigeratorEnvironment
+				.getInstance().GetCriticalItems();
+
+		if (!criticalItems.isEmpty() && criticalItems != null) {
+			System.out.println(criticalItems);
+			System.out.println("Would you like to buy the items?");
+			Scanner sc = new Scanner(System.in);
+			boolean result = sc.nextBoolean();
+
+			if (result) {
+				for (RefrigeratorItem item : criticalItems) {
+					RefrigeratorEnvironment.getInstance().BuyItem(
+							item,
+							RefrigeratorEnvironment.getInstance()
+									.getCriticalCount(),
+							RefrigeratorEnvironment.getInstance()
+									.getCriticalWeight());
+					
+					System.out.println("I bought some " + item.getItemName());
+				}
+			}
+
+		}
+	}
 
 }
