@@ -17,6 +17,11 @@ public class RefrigeratorItem {
 		this.weight = _weight;
 	}
 
+	public RefrigeratorItem(String _itemName) {
+		
+		this.itemName = _itemName;
+	}
+
 	public String getItemName() {
 		return itemName;
 	}
@@ -64,7 +69,9 @@ public class RefrigeratorItem {
 			return false;
 		}
 	}
-
+	
+	
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

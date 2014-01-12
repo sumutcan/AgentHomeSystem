@@ -1,8 +1,11 @@
 package agents;
 
 
+import Enviroment.RefrigeratorEnvironment;
+import ObjectLayer.RefrigeratorItem;
 import behaviours.Ping;
 import behaviours.Pong;
+import behaviours.PrintInfo;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
@@ -19,7 +22,23 @@ public class ObserverAgent extends Agent {
 	public void setup()
 	{
 		System.out.println("Observer agent up and running.");
-
+		RefrigeratorEnvironment.getInstance().setCriticalCount(3);
+		RefrigeratorEnvironment.getInstance().setCriticalWeight(100);
+		
+		
+		RefrigeratorItem i = new RefrigeratorItem("Süt", 4);
+		i.setBasedOnCount(true);
+		RefrigeratorEnvironment.getInstance().AddItemToRefrigirator(i);
+		
+		RefrigeratorItem j = new RefrigeratorItem("Elma", 150.0);
+		j.setBasedOnCount(false);
+		RefrigeratorEnvironment.getInstance().AddItemToRefrigirator(j);
+		
+		RefrigeratorItem item = new RefrigeratorItem("Süt");
+		
+		RefrigeratorEnvironment.getInstance().AddNewConsumption(item, 2); 
+		
+		
 		addBehaviour(new TickerBehaviour(this, 5000) {
 
 			@Override
@@ -48,6 +67,7 @@ public class ObserverAgent extends Agent {
 				observing.registerDefaultTransition("PONG", "PING");
 				
 				addBehaviour(observing);
+				addBehaviour(new PrintInfo());
 			}
 		});
 	}
