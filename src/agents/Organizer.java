@@ -16,14 +16,11 @@ import jade.lang.acl.ACLMessage;
 
 public class Organizer extends Agent {
 
-<<<<<<< HEAD
+
 	public void setup ()
 	{
 		DFAgentDescription dfd = AgentSetup.agentSetup("Organizer","organizer");
-=======
-	public void setup() {
-		DFAgentDescription dfd = AgentSetup.agentSetup();
->>>>>>> 97601047b37a2c191260ef77a146a1fc814eb9a1
+
 		try {
 			DFService.register(this, dfd);
 			UserInterface ui = new UserInterface(this);
