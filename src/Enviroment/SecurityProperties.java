@@ -69,6 +69,17 @@ public class SecurityProperties {
 			this.isSecure[i] = true;
 		}
 	}
+
+	public String[] getNamesOfCheckPoints() {
+		return namesOfCheckPoints;
+	}
+
+	public boolean[] getIsSecure() {
+		return isSecure;
+	}
+	
+	
+	
 	
 
 }

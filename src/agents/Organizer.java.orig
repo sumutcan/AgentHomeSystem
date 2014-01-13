@@ -1,14 +1,11 @@
 package agents;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import ObjectLayer.Contact;
 import ObjectLayer.Message;
 import gui.UserInterface;
 import utils.AgentSetup;
-import utils.CustomSerializer;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -20,13 +17,16 @@ import jade.lang.acl.ACLMessage;
 public class Organizer extends Agent {
 
 	public void setup() {
-		DFAgentDescription dfd = AgentSetup
-				.agentSetup("Organizer", "organizer");
-
+		DFAgentDescription dfd = AgentSetup.agentSetup();
 		try {
 			DFService.register(this, dfd);
+<<<<<<< HEAD
 			UserInterface ui = new UserInterface(this);
 
+=======
+			UserInterface ui = new UserInterface();
+			ui.setVisible(true);
+>>>>>>> a2617a4ed4dedbc0f120f9b38c3d8cbe918163c9
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public class Organizer extends Agent {
 
 			Message m = new Message(c, message);
 			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-			msg.setByteSequenceContent(CustomSerializer.serialize(m));
+			msg.setContentObject(m);
 			msg.setConversationId("sendMessage");
 
 			for (int i = 0; i < results.length; i++) {
