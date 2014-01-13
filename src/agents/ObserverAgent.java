@@ -45,6 +45,7 @@ public class ObserverAgent extends Agent {
 			protected void onTick() {
 
 				DFAgentDescription agentDesc = new DFAgentDescription();
+				
 				DFAgentDescription[] results = null;
 				// yorum
 				try {

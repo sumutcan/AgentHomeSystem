@@ -1,8 +1,13 @@
 package behaviours;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import com.sun.xml.internal.ws.encoding.soap.SerializationException;
 
 import jade.core.behaviours.CyclicBehaviour;
@@ -19,14 +24,14 @@ public class MessageSend extends CyclicBehaviour {
 		
 		if (msg != null)
 		{
-			try {
-				Serializable obj = msg.getContentObject();
+			
+			if (msg.hasByteSequenceContent())
+			{
 				
-				
-			} catch (UnreadableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+				
+				
+		
 		}
 	}
 
