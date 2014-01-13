@@ -1,5 +1,9 @@
 package Enviroment;
 
+import java.util.ArrayList;
+
+import ObjectLayer.Contact;
+
 public class BasisEnvironment {
 
 	private static volatile BasisEnvironment instance = null;
@@ -15,46 +19,21 @@ public class BasisEnvironment {
 		return instance;
 	}
 
-	double outdoorLightRatio;
-	double indoorLightRatio;
-	SecurityProperties securityProperties;
 	RefrigeratorEnvironment refrigiratorEnvironment;
+	ArrayList<Contact> contactList;
+	
+	
+	public ArrayList<Contact> getContactList() {
+		return contactList;
+	}
+
 
 	private BasisEnvironment() {
-	}
-
-	public double getOutdoorLightRatio() {
-		return outdoorLightRatio;
-	}
-
-	public void setOutdoorLightRatio(double outdoorLightRatio) {
-		this.outdoorLightRatio = outdoorLightRatio;
-	}
-
-	public double getIndoorLightRatio() {
-		return indoorLightRatio;
-	}
-
-	public void setIndoorLightRatio(double indoorLightRatio) {
-		this.indoorLightRatio = indoorLightRatio;
-	}
-
-	public SecurityProperties getSecurityProperties() {
-		return securityProperties;
+		this.contactList = new ArrayList<Contact>();
 	}
 	
-	public void setSecurityProperties(SecurityProperties securityProperties) {
-		this.securityProperties = securityProperties;
-	}
+	
 
-	public RefrigeratorEnvironment getRefrigiratorEnvironment() {
-		return refrigiratorEnvironment;
-	}
-
-	public void setRefrigiratorEnvironment(
-			RefrigeratorEnvironment refrigiratorEnvironment) {
-		this.refrigiratorEnvironment = refrigiratorEnvironment;
-	}
 	
 	
 
