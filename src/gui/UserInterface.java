@@ -2,30 +2,36 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JList;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.border.EmptyBorder;
+
+import Enviroment.BasisEnvironment;
+import ObjectLayer.Contact;
+
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase;
 
 public class UserInterface extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtAdSoyad;
 	private JTextField txtTelefon;
+	private JList list;
 
 	/**
 	 * Launch the application.
@@ -131,17 +137,31 @@ public class UserInterface extends JFrame {
 		organizerPanel.add(txtTelefon, "4, 4, left, default");
 		txtTelefon.setColumns(10);
 		
+		list = new JList(); // Bro o listeyi buraya constructur'a koy. Cok optum.
+		
 		JButton btnKaydet = new JButton("Kaydet");
 		btnKaydet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String adSoyad = txtAdSoyad.getText();
 				String phone = txtTelefon.getText();
-				System.out.println("Ad Soyad: " + adSoyad + "\nTelefon: " + phone );
+				
+				BasisEnvironment.getInstance().getContactList().add(new Contact(adSoyad, phone));
+				
+				DefaultListModel<Contact> model = new DefaultListModel<Contact>();
+				for (Contact c : BasisEnvironment.getInstance().getContactList())
+					model.addElement(c);
+				
+				list.setModel(model);
 			}
 		});
 		organizerPanel.add(btnKaydet, "2, 6, left, center");
 		
-		JList list = new JList(); // Bro o listeyi buraya constructur'a koy. Cok optum.
+		
+		DefaultListModel<Contact> model = new DefaultListModel<Contact>();
+		for (Contact c : BasisEnvironment.getInstance().getContactList())
+			model.addElement(c);
+		
+		list.setModel(model);
 		
 		organizerPanel.add(list, "5, 1, 24, 8, fill, fill");
 	}

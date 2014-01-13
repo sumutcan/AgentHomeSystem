@@ -1,5 +1,6 @@
 package agents;
 
+import gui.UserInterface;
 import utils.AgentSetup;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -13,6 +14,8 @@ public class Organizer extends Agent {
 		DFAgentDescription dfd = AgentSetup.agentSetup();
 		try {
 			DFService.register(this, dfd);
+			UserInterface ui = new UserInterface();
+			
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

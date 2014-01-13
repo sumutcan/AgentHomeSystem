@@ -32,5 +32,9 @@ public class Contact {
 		this.telNumber = telNumber;
 	}
 	
+	public String toString()
+	{
+		return name;
+	}
 	
 }
