@@ -12,7 +12,7 @@ public class SecurityAgent extends Agent {
 
 	public void setup()
 	{
-		DFAgentDescription dfd = AgentSetup.agentSetup();
+		DFAgentDescription dfd = AgentSetup.agentSetup("Security System","security");
 		try {
 			DFService.register(this, dfd);
 		} catch (FIPAException e) {

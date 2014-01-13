@@ -6,11 +6,11 @@ import behaviours.Alive;
 
 public class AgentSetup {
 
-	public static DFAgentDescription agentSetup() {
+	public static DFAgentDescription agentSetup(String name, String type) {
 		DFAgentDescription dfd = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
-		sd.setName("Refrigerator");
-		sd.setType("home-device");
+		sd.setName(name);
+		sd.setType(type);
 		dfd.addServices(sd);
 		
 		

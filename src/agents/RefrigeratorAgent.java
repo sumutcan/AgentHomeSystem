@@ -13,7 +13,7 @@ public class RefrigeratorAgent extends Agent {
 
 	public  void setup()
 	{
-		DFAgentDescription dfd = AgentSetup.agentSetup();
+		DFAgentDescription dfd = AgentSetup.agentSetup("Refrigerator","refrigerator");
 		try {
 			
 			DFService.register(this, dfd);
