@@ -18,6 +18,7 @@ import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
 import Enviroment.BasisEnvironment;
+import Enviroment.SecurityProperties;
 import ObjectLayer.Contact;
 import agents.Organizer;
 
@@ -87,6 +88,19 @@ public class UserInterface extends JFrame {
 		JPanel securityPanel = new JPanel();
 		tabbedPane.addTab("Security", null, securityPanel, null);
 		securityPanel.setLayout(new BorderLayout(0, 0));
+
+		JList listSecurity = new JList();
+		securityPanel.add(listSecurity, BorderLayout.CENTER);
+
+		DefaultListModel<String> securityModel = new DefaultListModel<String>();
+		String[] places = SecurityProperties.getInstance()
+				.getNamesOfCheckPoints();
+		boolean[] statuses = SecurityProperties.getInstance().getIsSecure();
+		String result;
+		for (int i = 0; i < places.length; i++) {
+			securityModel.addElement(places[i] + " - Status: " + (result = statuses[i] == true ? "Secure":"Insecure") );
+		}
+		listSecurity.setModel(securityModel);
 
 		JPanel organizerPanel = new JPanel();
 		tabbedPane.addTab("Organizer", null, organizerPanel, null);
