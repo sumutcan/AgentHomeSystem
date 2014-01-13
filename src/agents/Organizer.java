@@ -26,7 +26,7 @@ public class Organizer extends Agent {
 		try {
 			DFService.register(this, dfd);
 			UserInterface ui = new UserInterface(this);
-
+			ui.setVisible(true);
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
