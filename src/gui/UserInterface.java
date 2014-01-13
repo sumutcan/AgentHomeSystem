@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.management.timer.Timer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +30,9 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase;
 
 import javax.swing.JTextPane;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class UserInterface extends JFrame {
 
@@ -70,17 +74,6 @@ public class UserInterface extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-		JPanel homePanel = new JPanel();
-		tabbedPane.addTab("Home", null, homePanel, null);
-		homePanel.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblStatuses = new JLabel("Statuses");
-		homePanel.add(lblStatuses, BorderLayout.NORTH);
-
-		JTextArea txtStatuses = new JTextArea();
-		txtStatuses.setRows(50);
-		homePanel.add(txtStatuses, BorderLayout.CENTER);
-
 		JPanel refrigeratorPanel = new JPanel();
 		tabbedPane.addTab("Refrigerator", null, refrigeratorPanel, null);
 		refrigeratorPanel.setLayout(new BorderLayout(0, 0));
@@ -89,18 +82,26 @@ public class UserInterface extends JFrame {
 		tabbedPane.addTab("Security", null, securityPanel, null);
 		securityPanel.setLayout(new BorderLayout(0, 0));
 
-		JList listSecurity = new JList();
+		final JList listSecurity = new JList();
+		listSecurity.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int index = listSecurity.getSelectedIndex();
+				SecurityProperties.getInstance().changeState(index);
+				
+				securityListDataBind(listSecurity);
+			}
+		});
 		securityPanel.add(listSecurity, BorderLayout.CENTER);
-
-		DefaultListModel<String> securityModel = new DefaultListModel<String>();
-		String[] places = SecurityProperties.getInstance()
-				.getNamesOfCheckPoints();
-		boolean[] statuses = SecurityProperties.getInstance().getIsSecure();
-		String result;
-		for (int i = 0; i < places.length; i++) {
-			securityModel.addElement(places[i] + " - Status: " + (result = statuses[i] == true ? "Secure":"Insecure") );
-		}
-		listSecurity.setModel(securityModel);
+		securityListDataBind(listSecurity);
+		
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				securityListDataBind(listSecurity);
+			}
+		});
+		securityPanel.add(btnRefresh, BorderLayout.SOUTH);
 
 		JPanel organizerPanel = new JPanel();
 		tabbedPane.addTab("Organizer", null, organizerPanel, null);
@@ -171,10 +172,7 @@ public class UserInterface extends JFrame {
 		DefaultListModel<Contact> model = new DefaultListModel<Contact>();
 		for (Contact c : BasisEnvironment.getInstance().getContactList())
 			model.addElement(c);
-
-		model.addElement(new Contact("Yigitcan SENER", "05066421454"));
-		model.addElement(new Contact("Umutcan SIMSEK", "09004562514"));
-
+		
 		list.setModel(model);
 
 		organizerPanel.add(list, "6, 1, 23, 12, fill, fill");
@@ -200,6 +198,19 @@ public class UserInterface extends JFrame {
 			}
 		});
 		organizerPanel.add(btnGnder, "2, 12");
+	}
+	
+	private void securityListDataBind(JList list)
+	{
+		DefaultListModel<String> securityModel = new DefaultListModel<String>();
+		String[] places = SecurityProperties.getInstance()
+				.getNamesOfCheckPoints();
+		boolean[] statuses = SecurityProperties.getInstance().getIsSecure();
+		String result;
+		for (int i = 0; i < places.length; i++) {
+			securityModel.addElement(places[i] + " - Status: " + (result = statuses[i] == true ? "Secure":"Insecure") );
+		}
+		list.setModel(securityModel);
 	}
 
 }
