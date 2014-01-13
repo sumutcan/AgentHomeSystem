@@ -75,12 +75,12 @@ public class RefrigeratorItem {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		String message = "Item Name: " + this.itemName + "\n";
+		String message =this.itemName + " (";
 
 		if (this.basedOnCount) {
-			return message + "Value by count: " + this.count;
+			return message + "Count: " + this.count + ")";
 		} else
-			return message + "Value by weight: " + this.weight;
+			return message + "Weight: " + this.weight + ")";
 	}
 
 }

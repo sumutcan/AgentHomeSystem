@@ -3,8 +3,12 @@ package behaviours;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import Enviroment.RefrigeratorEnvironment;
 import Enviroment.SecurityProperties;
+import ObjectLayer.RefrigeratorItem;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -28,21 +32,30 @@ public class CheckSecurity extends TickerBehaviour {
 				.getNamesOfInsecureCheckPoints();
 
 		if (!insecurePlaces.isEmpty() && insecurePlaces != null) {
+			if (listOfInsecurePlaces.size() > 0) {
 
-			System.out.println(insecurePlaces);
+				Object[] options = { "Call the police", "Do nothing" };
+				JFrame frame = new JFrame();
+				int n = JOptionPane
+						.showOptionDialog(frame, insecurePlaces.toString(),
+								"Message from Security Agent",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[1]);
 
-			if (listOfInsecurePlaces.size() > 0)
-			{
-				Scanner s = new Scanner(System.in);
-				System.out.println("Options\n- Call the police(1)\n- Do nothing(Other)\n\nYour selection is: ");
-				String selection = s.next();
-				
-				if(selection.equals("1"))
-				{
-					System.out.println("Calling the police...\nSecurity breach terminated.");
+				if (n == JOptionPane.YES_OPTION) {
+					JOptionPane.showMessageDialog(frame,
+							"Calling the police...");
+					JOptionPane.showMessageDialog(frame,
+							"Security breach terminated.");
+				} else {
+					JOptionPane.showMessageDialog(frame,
+							"Well... You're the boss.");
 				}
+				
 				SecurityProperties.getInstance().setAllToSecure();
 			}
+
 		}
 	}
 }

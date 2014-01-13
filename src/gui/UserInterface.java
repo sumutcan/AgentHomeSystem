@@ -19,8 +19,10 @@ import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
 import Enviroment.BasisEnvironment;
+import Enviroment.RefrigeratorEnvironment;
 import Enviroment.SecurityProperties;
 import ObjectLayer.Contact;
+import ObjectLayer.RefrigeratorItem;
 import agents.Organizer;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -28,11 +30,16 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 import javax.swing.JTextPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.ArrayList;
 
 public class UserInterface extends JFrame {
 
@@ -41,6 +48,7 @@ public class UserInterface extends JFrame {
 	private JTextField txtTelefon;
 	private JList list;
 	private Organizer currentAgent = null;
+	private JTextField txtConsumption;
 
 	/**
 	 * Launch the application.
@@ -77,6 +85,75 @@ public class UserInterface extends JFrame {
 		JPanel refrigeratorPanel = new JPanel();
 		tabbedPane.addTab("Refrigerator", null, refrigeratorPanel, null);
 		refrigeratorPanel.setLayout(new BorderLayout(0, 0));
+		
+		final JList listItemsCounts = new JList();
+		refrigeratorPanel.add(listItemsCounts, BorderLayout.CENTER);
+		refrigeratorListDataBind(listItemsCounts);
+		
+		JPanel panel = new JPanel();
+		refrigeratorPanel.add(panel, BorderLayout.WEST);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 41, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		JLabel lblNewLabel_2 = new JLabel("Consumption value:");
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_2.gridx = 0;
+		gbc_lblNewLabel_2.gridy = 1;
+		panel.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		txtConsumption = new JTextField();
+		GridBagConstraints gbc_txtConsumption = new GridBagConstraints();
+		gbc_txtConsumption.gridwidth = 2;
+		gbc_txtConsumption.insets = new Insets(0, 0, 5, 5);
+		gbc_txtConsumption.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtConsumption.gridx = 0;
+		gbc_txtConsumption.gridy = 2;
+		panel.add(txtConsumption, gbc_txtConsumption);
+		txtConsumption.setColumns(10);
+		
+		JButton btnConsume = new JButton("Consume");
+		btnConsume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				RefrigeratorItem selectedItem = (RefrigeratorItem)listItemsCounts.getSelectedValue();
+				String consumptionValue = txtConsumption.getText();
+				int count;
+				double weight;
+				if(selectedItem.isBasedOnCount())
+				{
+					count = Integer.parseInt(consumptionValue);
+					RefrigeratorEnvironment.getInstance().AddNewConsumption(selectedItem, count);
+				}
+				else
+				{
+					weight = Double.parseDouble(consumptionValue);
+					RefrigeratorEnvironment.getInstance().AddNewConsumption(selectedItem, weight);
+				}
+				
+				refrigeratorListDataBind(listItemsCounts);
+				txtConsumption.setText("");
+			}
+		});
+		GridBagConstraints gbc_btnConsume = new GridBagConstraints();
+		gbc_btnConsume.gridwidth = 2;
+		gbc_btnConsume.insets = new Insets(0, 0, 5, 5);
+		gbc_btnConsume.gridx = 0;
+		gbc_btnConsume.gridy = 3;
+		panel.add(btnConsume, gbc_btnConsume);
+		
+		JButton btnRefreshRefList = new JButton("Refresh");
+		btnRefreshRefList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				refrigeratorListDataBind(listItemsCounts);
+			}
+		});
+		refrigeratorPanel.add(btnRefreshRefList, BorderLayout.SOUTH);
 
 		JPanel securityPanel = new JPanel();
 		tabbedPane.addTab("Security", null, securityPanel, null);
@@ -88,13 +165,13 @@ public class UserInterface extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				int index = listSecurity.getSelectedIndex();
 				SecurityProperties.getInstance().changeState(index);
-				
+
 				securityListDataBind(listSecurity);
 			}
 		});
 		securityPanel.add(listSecurity, BorderLayout.CENTER);
 		securityListDataBind(listSecurity);
-		
+
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -165,6 +242,9 @@ public class UserInterface extends JFrame {
 					model.addElement(c);
 
 				list.setModel(model);
+
+				txtAdSoyad.setText("");
+				txtTelefon.setText("");
 			}
 		});
 		organizerPanel.add(btnKaydet, "2, 6, left, center");
@@ -172,7 +252,7 @@ public class UserInterface extends JFrame {
 		DefaultListModel<Contact> model = new DefaultListModel<Contact>();
 		for (Contact c : BasisEnvironment.getInstance().getContactList())
 			model.addElement(c);
-		
+
 		list.setModel(model);
 
 		organizerPanel.add(list, "6, 1, 23, 12, fill, fill");
@@ -195,20 +275,33 @@ public class UserInterface extends JFrame {
 						currentAgent.sendMessage(c, message);
 					}
 				}
+
+				textPaneMessage.setText("");
 			}
 		});
 		organizerPanel.add(btnGnder, "2, 12");
 	}
-	
-	private void securityListDataBind(JList list)
-	{
+
+	private void securityListDataBind(JList list) {
 		DefaultListModel<String> securityModel = new DefaultListModel<String>();
 		String[] places = SecurityProperties.getInstance()
 				.getNamesOfCheckPoints();
 		boolean[] statuses = SecurityProperties.getInstance().getIsSecure();
 		String result;
 		for (int i = 0; i < places.length; i++) {
-			securityModel.addElement(places[i] + " - Status: " + (result = statuses[i] == true ? "Secure":"Insecure") );
+			securityModel.addElement(places[i] + " - Status: "
+					+ (result = statuses[i] == true ? "Secure" : "Insecure"));
+		}
+		list.setModel(securityModel);
+	}
+	
+	private void refrigeratorListDataBind(JList list) {
+		DefaultListModel<RefrigeratorItem> securityModel = new DefaultListModel<RefrigeratorItem>();
+		ArrayList<RefrigeratorItem> items = RefrigeratorEnvironment.getInstance()
+				.getItems();
+		
+		for (RefrigeratorItem item : items) {
+			securityModel.addElement(item);
 		}
 		list.setModel(securityModel);
 	}

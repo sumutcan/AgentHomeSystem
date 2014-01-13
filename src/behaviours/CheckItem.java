@@ -3,6 +3,9 @@ package behaviours;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import Enviroment.RefrigeratorEnvironment;
 import ObjectLayer.RefrigeratorItem;
 import jade.core.AID;
@@ -25,12 +28,15 @@ public class CheckItem extends TickerBehaviour {
 				.getInstance().GetCriticalItems();
 
 		if (!criticalItems.isEmpty() && criticalItems != null) {
-			System.out.println(criticalItems);
-			System.out.println("Would you like to buy the items?");
-			Scanner sc = new Scanner(System.in);
-			boolean result = sc.nextBoolean();
 
-			if (result) {
+			Object[] options = { "Yes, please", "No, thanks"};
+			JFrame frame = new JFrame();
+			int n = JOptionPane.showOptionDialog(frame, criticalItems.toString() +
+					"\nWould you like to buy the items?",
+					"Message from Refrigerator Agent", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			if (n == JOptionPane.YES_OPTION) {
 				for (RefrigeratorItem item : criticalItems) {
 					RefrigeratorEnvironment.getInstance().BuyItem(
 							item,
@@ -38,8 +44,7 @@ public class CheckItem extends TickerBehaviour {
 									.getCriticalCount(),
 							RefrigeratorEnvironment.getInstance()
 									.getCriticalWeight());
-					
-					System.out.println("I bought some " + item.getItemName());
+					JOptionPane.showMessageDialog(frame,"I bought some " + item.getItemName());
 				}
 			}
 

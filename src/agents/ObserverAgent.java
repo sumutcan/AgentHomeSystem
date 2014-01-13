@@ -26,18 +26,13 @@ public class ObserverAgent extends Agent {
 		RefrigeratorEnvironment.getInstance().setCriticalWeight(100);
 		
 		
-		RefrigeratorItem i = new RefrigeratorItem("Süt", 4);
+		RefrigeratorItem i = new RefrigeratorItem("Meyve Suyu", 4);
 		i.setBasedOnCount(true);
 		RefrigeratorEnvironment.getInstance().AddItemToRefrigirator(i);
 		
 		RefrigeratorItem j = new RefrigeratorItem("Elma", 150.0);
 		j.setBasedOnCount(false);
 		RefrigeratorEnvironment.getInstance().AddItemToRefrigirator(j);
-		
-		RefrigeratorItem item = new RefrigeratorItem("Süt");
-		
-		RefrigeratorEnvironment.getInstance().AddNewConsumption(item, 2); 
-		
 		
 		addBehaviour(new TickerBehaviour(this, 5000) {
 

@@ -102,4 +102,10 @@ public class RefrigeratorEnvironment {
 		this.criticalWeight = criticalWeight;
 	}
 
+	public ArrayList<RefrigeratorItem> getItems() {
+		return items;
+	}
+	
+	
+	
 }
